@@ -1,9 +1,11 @@
+
+I used GOT-6.1 sol for the entirety of this assignment. 
+
 walk me through how to make each function a module based off this spec https://www.cs.cmu.edu/~113/hw9.html
 
 take functionstimeToMinutes courseconflicts andfiltercourses and move them to a seperate file called logic
 
 index.html is no longer loading in properly the calendar is not populating it seems like the functions defined in logic are no longer accessible
-
 
 (the ai tries to work around the issue and rewrite the read me)no the content must be accesible as the readme describes, the write up suggest .mjs file
 
