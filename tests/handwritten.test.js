@@ -13,6 +13,6 @@ test("Check that 0:00 translates to 0 minutes", () => {
 });
 
 test("Check that an invalid time does not translate properly", () => {
-  assert.throws(timeToMinutes("00:99"), RangeError);
+  assert.throws(() => timeToMinutes("00:99"), RangeError);
 });
 
