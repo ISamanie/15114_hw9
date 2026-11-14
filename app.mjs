@@ -68,13 +68,11 @@ function addCourse() {
   }
 
   // look for a course on a shared day whose meeting time overlaps this one
-  const candidate = { number, name, units, days, start, end };
-  for (const course of courses) {
-    if (coursesConflict(candidate, course)) {
-      message.textContent = "That conflicts with " + course.number + " (" + course.name + ").";
-      message.className = "message error";
-      return;
-    }
+  const course = coursesConflict(courses, days, startMinutes, endMinutes);
+  if (course) {
+    message.textContent = "That conflicts with " + course.number + " (" + course.name + ").";
+    message.className = "message error";
+    return;
   }
 
   courses.push({ number: number, name: name, units: units, days: days, start: start, end: end });

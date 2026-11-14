@@ -1,26 +1,40 @@
-// Pure calculations extracted from app.js; existing behavior is preserved.
+// Logic extracted from app.js, preserving the original loops and conditions.
 
 export function timeToMinutes(time) {
   return Number(time.slice(0, 2)) * 60 + Number(time.slice(3, 5));
 }
 
-export function coursesConflict(first, second) {
-  const sharesADay = first.days.some(day => second.days.includes(day));
-  if (!sharesADay) {
-    return false;
+export function coursesConflict(courses, days, startMinutes, endMinutes) {
+  for (const course of courses) {
+    let sharesADay = false;
+    for (const day of days) {
+      if (course.days.includes(day)) {
+        sharesADay = true;
+      }
+    }
+    if (!sharesADay) {
+      continue;
+    }
+
+    const otherStart = Number(course.start.slice(0, 2)) * 60 + Number(course.start.slice(3, 5));
+    const otherEnd = Number(course.end.slice(0, 2)) * 60 + Number(course.end.slice(3, 5));
+
+    if (startMinutes <= otherEnd && otherStart <= endMinutes) {
+      return course;
+    }
   }
-
-  const firstStart = timeToMinutes(first.start);
-  const firstEnd = timeToMinutes(first.end);
-  const secondStart = timeToMinutes(second.start);
-  const secondEnd = timeToMinutes(second.end);
-
-  return firstStart <= secondEnd && secondStart <= firstEnd;
 }
 
 export function filterCourses(courses, query) {
-  return courses.filter(function (course) {
+  const matchingCourses = [];
+
+  courses.forEach(function (course, index) {
     const haystack = (course.number + " " + course.name).toLowerCase();
-    return !query || haystack.includes(query);
+    if (query && !haystack.includes(query)) {
+      return;
+    }
+    matchingCourses.push(course);
   });
+
+  return matchingCourses;
 }
