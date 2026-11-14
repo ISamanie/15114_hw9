@@ -62,3 +62,13 @@ I think this shows us how important it is for us to write valid test cases, espe
 
 A brief note on how you used AI on this assignment, with citations.
 Codex was used to generate a majority of the code for this assignment.
+
+Write up of function behavior given to ai for writing tests
+
+    timeToMinutes takes a time in "HH:MM" format and converts it to minutes since midnight. "04:20" should return 260. It could go wrong with empty inputs or invalid times like accepting "09:99" as a real time or any negative times, or hours past 24.
+
+    coursesConflict checks whether a  course overlaps with an existing course on a day. It should return the first conflicting course or none if there isn’t one. Things that could go wrong are treating back-to-back classes as conflicts or missing a shared meeting day.
+
+    filterCourses searches course numbers and titles and returns the matching courses. An empty search should return everything and no matches should return an empty array. It could go wrong with capitalization, returning a wrong match or destructively changing the list of courses.
+
+    Include any other relevant test you may think of.
