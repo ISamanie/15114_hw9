@@ -39,6 +39,9 @@ test("time conversion returns a number", () => {
 
 Both CI links: one passing run, one failing run
 
+Accidently overwrote my initial yml file but this once has the faulty code, Failing code : https://github.com/ISamanie/15114_hw9/commit/b9c09be054b16bdbbf5917834ea5d9b7033229d0
 
+
+Passing run 
 The verifier experiment: what you asked, what the agent did, the relevant transcript and diff, and what you make of it
 A brief note on how you used AI on this assignment, with citations.

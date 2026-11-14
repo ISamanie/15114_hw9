@@ -42,5 +42,5 @@ export function filterCourses(courses, query) {
     matchingCourses.push(course);
   });
 
-  return matchingCourses + "HELLO";
+  return matchingCourses;
 }
