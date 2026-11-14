@@ -16,3 +16,7 @@ test("Check that an invalid time does not translate properly", () => {
   assert.throws(() => timeToMinutes("00:99"), RangeError);
 });
 
+// Failling test
+test("Check zebra", () => {
+  assert.equal(timeToMinutes("zebra"), 10000);
+});

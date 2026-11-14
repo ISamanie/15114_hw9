@@ -41,3 +41,5 @@ Gave ai this description and told it to write test in ai.test.js
 Given the fixes described in TESTING.md fix the buggy logic in logic.mjs. If you can think of other fixes suggest them here.
 
 Handwritten test is still failing, why is that?
+
+Fix the bug in the repo do not change the test cases, do not return until all test cases pass
