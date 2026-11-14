@@ -8,6 +8,12 @@
 // The sample course data below is invented. The course numbers are real; the units, meeting
 // times, and days are not.
 
+import {
+  timeToMinutes,
+  coursesConflict,
+  filterCourses
+} from "./logic.mjs";
+
 const DAYS = ["M", "T", "W", "R", "F"];
 const DAY_NAMES = { M: "Mon", T: "Tue", W: "Wed", R: "Thu", F: "Fri" };
 
@@ -52,8 +58,8 @@ function addCourse() {
   }
 
   // turn "09:00" into minutes since midnight so times can be compared
-  const startMinutes = Number(start.slice(0, 2)) * 60 + Number(start.slice(3, 5));
-  const endMinutes = Number(end.slice(0, 2)) * 60 + Number(end.slice(3, 5));
+  const startMinutes = timeToMinutes(start);
+  const endMinutes = timeToMinutes(end);
 
   if (endMinutes <= startMinutes) {
     message.textContent = "The end time has to be after the start time.";
@@ -62,21 +68,9 @@ function addCourse() {
   }
 
   // look for a course on a shared day whose meeting time overlaps this one
+  const candidate = { number, name, units, days, start, end };
   for (const course of courses) {
-    let sharesADay = false;
-    for (const day of days) {
-      if (course.days.includes(day)) {
-        sharesADay = true;
-      }
-    }
-    if (!sharesADay) {
-      continue;
-    }
-
-    const otherStart = Number(course.start.slice(0, 2)) * 60 + Number(course.start.slice(3, 5));
-    const otherEnd = Number(course.end.slice(0, 2)) * 60 + Number(course.end.slice(3, 5));
-
-    if (startMinutes <= otherEnd && otherStart <= endMinutes) {
+    if (coursesConflict(candidate, course)) {
       message.textContent = "That conflicts with " + course.number + " (" + course.name + ").";
       message.className = "message error";
       return;
@@ -130,10 +124,10 @@ function renderRoster(query) {
   const rows = document.getElementById("rows");
   rows.innerHTML = "";
   let shown = 0;
+  const matchingCourses = filterCourses(courses, query);
 
   courses.forEach(function (course, index) {
-    const haystack = (course.number + " " + course.name).toLowerCase();
-    if (query && !haystack.includes(query)) {
+    if (!matchingCourses.includes(course)) {
       return;
     }
     shown++;
@@ -152,7 +146,10 @@ function renderRoster(query) {
       '<td class="days">' + course.days.join("") + "</td>" +
       '<td class="time">' + startLabel + " to " + endLabel + "</td>" +
       '<td class="actions"><button class="btn-remove" title="Remove ' + course.number +
-      '" onclick="removeCourse(' + index + ')">&times;</button></td>';
+      '">&times;</button></td>';
+    tr.querySelector(".btn-remove").addEventListener("click", function () {
+      removeCourse(index);
+    });
     rows.appendChild(tr);
   });
 
@@ -191,8 +188,8 @@ function renderWeek() {
         return;
       }
 
-      const startMinutes = Number(course.start.slice(0, 2)) * 60 + Number(course.start.slice(3, 5));
-      const endMinutes = Number(course.end.slice(0, 2)) * 60 + Number(course.end.slice(3, 5));
+      const startMinutes = timeToMinutes(course.start);
+      const endMinutes = timeToMinutes(course.end);
 
       const top = Math.max(0, ((startMinutes - FIRST_HOUR * 60) / 60) * HOUR_PX);
       const height = Math.max(22, ((endMinutes - startMinutes) / 60) * HOUR_PX - 2);
@@ -213,3 +210,8 @@ function renderWeek() {
 
   document.getElementById("grid").innerHTML = head + '<div class="week-body">' + gutter + columns + "</div>";
 }
+
+document.getElementById("add-course").addEventListener("click", addCourse);
+document.getElementById("search").addEventListener("input", render);
+
+render();
