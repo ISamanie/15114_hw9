@@ -37,3 +37,7 @@ Gave ai this description and told it to write test in ai.test.js
     filterCourses searches course numbers and titles and returns the matching courses. An empty search should return everything and no matches should return an empty array. It could go wrong with capitalization, returning a wrong match or destructively changing the list of courses.
 
     Include any other relevant test you may think of.
+
+Given the fixes described in TESTING.md fix the buggy logic in logic.mjs. If you can think of other fixes suggest them here.
+
+Handwritten test is still failing, why is that?
